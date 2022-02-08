@@ -21,7 +21,7 @@ conn = pymysql.connect(
 
 def import_planet(name):
     """
-    Initially adding planet and its residents to the database
+    Add planet and its residents to the database
     """
     url = name
     now = datetime.now()
@@ -31,6 +31,9 @@ def import_planet(name):
     cur = conn.cursor()
     cur.execute(f"REPLACE INTO planets (name,gravity,climate,terrain,population,url,date) VALUES ('{data['name']}','{data['gravity']}','{data['climate']}','{data['terrain']}','{data['population']}','{data['url']}','{formatted_date}')")
     conn.commit()
+    print ("Number of rows:")
+    print(cur.rowcount)
+    ins_planet = cur.rowcount
     print("----------------")
     print(formatted_date)
     print("Planet: " + data['name'])
@@ -44,10 +47,28 @@ def import_planet(name):
         cur = conn.cursor()
         cur.execute(f"REPLACE INTO characters (name,gender,homeworld,height,mass,date) VALUES ('{resident_data['name']}','{resident_data['gender']}','{resident_data['homeworld']}','{resident_data['height']}','{resident_data['mass']}','{formatted_date}')")
         conn.commit()
-#        print(cur.rowcount)
-    print("----------------")
 
+    print("----------------")
+    return ins_planet
 #import_planet()
+
+def delete_planet(name_delete):
+
+    """
+    Delete planet and its residents from the database
+    """
+   # del_planet = name_delete
+    print("-------------")
+    print(name_delete)
+    print("-------------")
+    cur = conn.cursor()
+    cur.execute(f"DELETE FROM planets WHERE (url = '{name_delete}')")
+    del_planet = cur.rowcount
+    cur.execute(f"DELETE FROM characters WHERE (homeworld = '{name_delete}')")
+    conn.commit()
+    return del_planet
+
+
 
 def get_all_details_planet():
     cur = conn.cursor()

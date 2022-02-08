@@ -8,10 +8,12 @@
 <hr>
     <br>
     <br>
+<p>{%- if request.path != "/" %} <h3 style="color:blue;">The planet is {{ addel_planet }}</h3> {% endif %}</p>
+    <h2>===Star Wars planets and characters===</h2>
 
-    <h4>===Star Wars planets and characters===</h4>
+
        {{var}}
-<form action="/insert" method="POST">
+<!--<form action="/insert" method="POST">
               <div>
                 <label for="user">Name:</label>
                 <input name="name" type="text" id="user">
@@ -20,6 +22,31 @@
               <br>
               <input type="submit" name="submit" value="Submit">
             </form>
+-->
+
+<form action="/insert" method="POST">
+    <p><strong>Select the planet:</strong></p>
+    <p><select name="name">
+  <option value="https://swapi.dev/api/planets/1/">Tatooine</option>
+  <option value="https://swapi.dev/api/planets/2/">Alderaan</option>
+  <option value="https://swapi.dev/api/planets/8/">Naboo</option>
+  <option value="https://swapi.dev/api/planets/9/">Coruscant</option>
+  <option value="https://swapi.dev/api/planets/10/">Kamino</option>
+ </select></p>
+ <p><input type="submit" value="Add/Update"></p>
+</form>
+
+<form action="/delete" method="POST">
+    <p><strong>Select the planet:</strong></p>
+    <p><select name="name_delete">
+  <option value="https://swapi.dev/api/planets/1/">Tatooine</option>
+  <option value="https://swapi.dev/api/planets/2/">Alderaan</option>
+  <option value="https://swapi.dev/api/planets/8/">Naboo</option>
+  <option value="https://swapi.dev/api/planets/9/">Coruscant</option>
+  <option value="https://swapi.dev/api/planets/10/">Kamino</option>
+ </select></p>
+ <p><input type="submit" value="Delete"></p>
+</form>
     <br>
     <br>
 <hr>
