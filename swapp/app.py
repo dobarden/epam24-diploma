@@ -13,7 +13,9 @@ app = Flask(__name__)
 def index():
     all_planets, all_characters = db_sw.get_all_details_planet()
     all_data, form_items_for_del = main_output(all_planets, all_characters)
-
+    if not all_data:
+        all_data = '<b style="color: red; text-align: center;">No planets in the database!</b>'
+        all_data = Markup(all_data)
     return render_template('index.html', var=all_data, form_items_for_del=form_items_for_del)
 
 
@@ -80,7 +82,7 @@ def delete():
 
 def main_output(all_planets, all_characters):
     all_data = ""
-    form_items_for_del = "<option disabled selected>---Planets to delete---</option>"
+    form_items_for_del = ""
     for item in all_planets:
         planet_items = '<h2>Planet ' + item[1] + ' and its residents: </h2><ul>'
         planet_items += '<li> Name: ' + item[1] + '</li>'

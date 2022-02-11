@@ -31,7 +31,7 @@ html, body {
 
 .header {
     height: 100px;
-    background: #6CAEDD;
+    background: #191919;
     color: #fff;
     -webkit-box-flex: 0;
     -webkit-flex: none;
@@ -41,7 +41,7 @@ html, body {
 
 .footer {
     height: 50px;
-    background: #364850;
+    background: #191919;
     color: #fff;
     -webkit-box-flex: 0;
     -webkit-flex: none;
@@ -69,8 +69,9 @@ html, body {
 }
 
 .sidebar {
-    background: #FFD399;
+    background: #C1C1C1;
     flex: 0 0 auto;
+    text-align: center;
 }
 
 .sidebar1 {
@@ -79,5 +80,15 @@ html, body {
     order: 0;
 }
 
+.form_sidebar {
+    width: 150px;
+    padding: 3px;
+    border: 1px
+    solid #ccc;
+}
 
+.button_sidebar {
+    height:30px;
+    width:150px;
+}
 

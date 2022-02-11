@@ -3,47 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,minimum-scale=1,maximum-scale=10">
-    <title>Star Wars planets and characters</title>
+    <title>StarWars planets and residents</title>
+    <link type="image/png" sizes="32x32" rel="icon" href="{{ url_for('static', filename='icon.png') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
 </head>
 <body>
     <div class="content-wrapper">
         <header class="header">
-            <p style="font-size: 30px; margin: 0; padding: 10px 1em;">Header</p>
+            <img src="{{ url_for('static', filename='r2d2.png') }}">
+            <p style="text-align: center; font-size: 30px; margin-left: 240px">===StarWars planets and residents===</p>
+
         </header>
 
         <div class="container clearfix">
             <main class="content">
-                <p style="text-align: center; font-size: 30px; margin: 0; padding: 1.5em 0;">===Star Wars planets and characters===</p>
+ <!--               <p style="text-align: center; font-size: 30px; margin: 0; padding: 1.5em 0;">===Star Wars planets and characters===</p> -->
 
-                <p>{%- if request.path != "/" %} <h3 style="color:blue;">The planet {{ planet_name }} is {{ addel_planet }}</h3> {% endif %}</p>
+
+                {%- if request.path != "/" %} <p><a href="./">< Go Home</a></p>
+                <p style="color:blue; text-align: center; font-size: 20px;">The planet {{ planet_name }} is {{ addel_planet }}!</p> {% endif %}
 
                 {{var}}
+
             </main>
             <aside class="sidebar sidebar1">
 				<p style="text-align: center;">
-
                     <form action="/insert" method="POST">
-						<p><strong>Select the planet:</strong></p>
-						<p><select name="name">
-                            <option disabled selected>-Planets to add/update-</option>
-							<option value="https://swapi.dev/api/planets/1/">Tatooine</option>
+						<p><strong>Add/Update planet:</strong></p>
+						<p><select name="name" class="form_sidebar">
+
+                            <option value="https://swapi.dev/api/planets/1/">Tatooine</option>
 							<option value="https://swapi.dev/api/planets/2/">Alderaan</option>
 							<option value="https://swapi.dev/api/planets/8/">Naboo</option>
 							<option value="https://swapi.dev/api/planets/9/">Coruscant</option>
 							<option value="https://swapi.dev/api/planets/10/">Kamino</option>
 						</select></p>
-                        <p><input name="form_input_text" size="20" placeholder="Input URL"></p>
-						<p><input type="submit" value="Add/Update"></p>
+                        <p><input name="form_input_text" class="form_sidebar" placeholder="Input URL"></p>
+						<p><input type="submit" class="button_sidebar" value="Add/Update"></p>
 					</form>
 
 					<form action="/delete" method="POST">
-						<p><strong>Select the planet:</strong></p>
-						<p><select name="name_delete">
+						<p><strong>Delete planet:</strong></p>
+						<p><select name="name_delete" class="form_sidebar">
 							{{ form_items_for_del }}
 						</select></p>
-						<p><input type="submit" value="Delete"></p>
+						<p><input type="submit" class="button_sidebar" value="Delete"></p>
 					</form>
+                <p style="text-align: left; font-size: 13px; padding: 10px;">* There are 10 planets in the drop-down list for adding. You can upload additional planets by entering the URL of the planet in the "Input URL" field. For example: https://swapi.dev/api/planets/n/ where "n" is the planet number from 1 to 60.</p>
+                <img src="{{ url_for('static', filename='c-3po.png') }}">
             </aside>
         </div>
 
