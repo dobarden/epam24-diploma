@@ -16,7 +16,7 @@
             <main class="content">
                 <p style="text-align: center; font-size: 30px; margin: 0; padding: 1.5em 0;">===Star Wars planets and characters===</p>
 
-                <p>{%- if request.path != "/" %} <h3 style="color:blue;">The planet is {{ addel_planet }}</h3> {% endif %}</p>
+                <p>{%- if request.path != "/" %} <h3 style="color:blue;">The planet {{ planet_name }} is {{ addel_planet }}</h3> {% endif %}</p>
 
                 {{var}}
             </main>
@@ -26,6 +26,7 @@
                     <form action="/insert" method="POST">
 						<p><strong>Select the planet:</strong></p>
 						<p><select name="name">
+                            <option disabled selected>-Planets to add/update-</option>
 							<option value="https://swapi.dev/api/planets/1/">Tatooine</option>
 							<option value="https://swapi.dev/api/planets/2/">Alderaan</option>
 							<option value="https://swapi.dev/api/planets/8/">Naboo</option>

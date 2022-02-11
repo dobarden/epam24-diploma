@@ -33,6 +33,7 @@ def import_planet(name):
     conn.commit()
  #   print ("Number of rows:")
  #   print(cur.rowcount)
+    planet_name = data['name']
     ins_planet = cur.rowcount
 #    print("----------------")
 #    print(formatted_date)
@@ -49,7 +50,7 @@ def import_planet(name):
         conn.commit()
 
  #   print("----------------")
-    return ins_planet
+    return planet_name, ins_planet;
 #import_planet()
 
 def delete_planet(name_delete):
@@ -62,11 +63,15 @@ def delete_planet(name_delete):
  #   print(name_delete)
 #    print("-------------")
     cur = conn.cursor()
+    cur.execute(f"SELECT * FROM planets WHERE (url = '{name_delete}')")
+    print("---------delete planet----------")
+    #print(cur.fetchall())
+    name_del_planet = cur.fetchall()[0][1]
     cur.execute(f"DELETE FROM planets WHERE (url = '{name_delete}')")
     del_planet = cur.rowcount
     cur.execute(f"DELETE FROM characters WHERE (homeworld = '{name_delete}')")
     conn.commit()
-    return del_planet
+    return name_del_planet, del_planet;
 
 
 
