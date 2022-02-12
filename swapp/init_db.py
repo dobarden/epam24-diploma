@@ -9,6 +9,7 @@ import pymysql
 from datetime import datetime
 import variables
 
+#Creating a connection to the database
 conn = pymysql.connect(
     host=variables.host,
     port=variables.port,
@@ -18,7 +19,6 @@ conn = pymysql.connect(
 )
 
 # Creating tables
-
 cursor = conn.cursor()
 cursor.execute("CREATE TABLE IF NOT EXISTS planets (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(200) UNIQUE,"
                "gravity VARCHAR(200), climate VARCHAR(200), terrain VARCHAR(200),population BIGINT,url VARCHAR(200),"
@@ -40,6 +40,7 @@ def import_planet():
     cur.execute(f"REPLACE INTO planets (name,gravity,climate,terrain,population,url,date) VALUES ('{data['name']}',"
                 f"'{data['gravity']}','{data['climate']}','{data['terrain']}','{data['population']}','{data['url']}',"
                 f"'{formatted_date}')")
+    # Saving transaction
     conn.commit()
     print("----------------")
     print(formatted_date)

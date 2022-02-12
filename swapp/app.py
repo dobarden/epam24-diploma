@@ -25,7 +25,7 @@ def index():
 @app.route('/insert', methods=['post'])
 def insert():
     if request.method == 'POST':
-        form_input_select = request.form['name']
+        form_input_select = request.form['form_select_planet']
         form_input_text = request.form['form_input_text']
 
         if not form_input_text:
