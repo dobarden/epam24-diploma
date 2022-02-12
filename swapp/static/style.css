@@ -17,7 +17,7 @@ html, body {
     font-size: 14px;
     line-height: 1.4;
     color: #333;
-    background-color: #fff;
+    background-color: #F2F2F2;
 }
 
 .header, .content-wrapper, .container, .content, .footer {
@@ -37,10 +37,11 @@ html, body {
     -webkit-flex: none;
     -ms-flex: none;
     flex: none;
+    position:relative;
 }
 
 .footer {
-    height: 50px;
+    height: 70px;
     background: #191919;
     color: #fff;
     -webkit-box-flex: 0;
@@ -57,6 +58,7 @@ html, body {
 
 .container {
     flex-wrap: nowrap;
+    background-color: #FFF;
 }
 
 .content {
@@ -72,6 +74,8 @@ html, body {
     background: #C1C1C1;
     flex: 0 0 auto;
     text-align: center;
+    position:relative;
+    min-height: 720px;
 }
 
 .sidebar1 {
@@ -92,3 +96,21 @@ html, body {
     width:150px;
 }
 
+
+.img_sidebar {
+    position:absolute;
+    bottom:10px;
+    right:50px;
+
+}
+
+.text_head {
+    font-size: 30px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+table {
+    padding-right: 20px;
+}

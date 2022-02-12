@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,minimum-scale=1,maximum-scale=10">
@@ -11,20 +11,20 @@
 <body>
     <div class="content-wrapper">
         <header class="header">
-            <img src="{{ url_for('static', filename='r2d2.png') }}">
-            <p style="text-align: center; font-size: 30px; margin-left: 240px">===StarWars planets and residents===</p>
+            <img style="position:absolute; left:10px;" src="{{ url_for('static', filename='r2d2.png') }}">
+            <p class="text_head">===StarWars Planets And Residents===</p>
 
         </header>
 
         <div class="container clearfix">
             <main class="content">
- <!--               <p style="text-align: center; font-size: 30px; margin: 0; padding: 1.5em 0;">===Star Wars planets and characters===</p> -->
-
 
                 {%- if request.path != "/" %} <p><a href="./">< Go Home</a></p>
+
                 <p style="color:blue; text-align: center; font-size: 20px;">The planet {{ planet_name }} is {{ addel_planet }}!</p> {% endif %}
 
                 {{var}}
+                <p></p>
 
             </main>
             <aside class="sidebar sidebar1">
@@ -32,12 +32,17 @@
                     <form action="/insert" method="POST">
 						<p><strong>Add/Update planet:</strong></p>
 						<p><select name="name" class="form_sidebar">
-
                             <option value="https://swapi.dev/api/planets/1/">Tatooine</option>
 							<option value="https://swapi.dev/api/planets/2/">Alderaan</option>
+                            <option value="https://swapi.dev/api/planets/3/">AYavin IV</option>
 							<option value="https://swapi.dev/api/planets/8/">Naboo</option>
 							<option value="https://swapi.dev/api/planets/9/">Coruscant</option>
 							<option value="https://swapi.dev/api/planets/10/">Kamino</option>
+                            <option value="https://swapi.dev/api/planets/14/">Kashyyyk</option>
+							<option value="https://swapi.dev/api/planets/22/">Corellia</option>
+							<option value="https://swapi.dev/api/planets/37/">Ryloth</option>
+                            <option value="https://swapi.dev/api/planets/51/">Mirial</option>
+
 						</select></p>
                         <p><input name="form_input_text" class="form_sidebar" placeholder="Input URL"></p>
 						<p><input type="submit" class="button_sidebar" value="Add/Update"></p>
@@ -51,12 +56,12 @@
 						<p><input type="submit" class="button_sidebar" value="Delete"></p>
 					</form>
                 <p style="text-align: left; font-size: 13px; padding: 10px;">* There are 10 planets in the drop-down list for adding. You can upload additional planets by entering the URL of the planet in the "Input URL" field. For example: https://swapi.dev/api/planets/n/ where "n" is the planet number from 1 to 60.</p>
-                <img src="{{ url_for('static', filename='c-3po.png') }}">
+                <img class="img_sidebar" src="{{ url_for('static', filename='c-3po.png') }}">
             </aside>
         </div>
 
         <footer class="footer">
-            <p style="font-size: 30px; margin: 0; padding: 10px 1em;">Footer</p>
+            <p style="padding: 10px;"><p>This site takes Star Wars data through HTTP web API from the swapi.dev site. There is information about 60 planets and their residents on the swapi.dev. <br>And you can use this data on our site.</p></p>
         </footer>
     </div>
 </body>
