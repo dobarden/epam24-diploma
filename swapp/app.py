@@ -5,15 +5,20 @@
 
 from flask import Flask, render_template, request
 from markupsafe import Markup
-import rds_db as db_sw
+import aws_mysql_db as db1
+
 
 app = Flask(__name__)
 
+#Initially adding planet and its residents to the database
+@app.before_first_request
+def before_first_request_func():
+    db1.init_import_planet()
 
 #Homepage
 @app.route('/')
 def index():
-    all_planets, all_characters = db_sw.get_all_details_planet()
+    all_planets, all_characters = db1.get_all_details_planet()
     all_data, form_items_for_del = main_output(all_planets, all_characters)
     if not all_data:
         all_data = '<h2 style="color: red; text-align: center; padding-top: 30px;">No planets in the database!</h2>'
@@ -33,14 +38,14 @@ def insert():
         else:
             planet_url = form_input_text
 
-        planet_name, ins_planet = db_sw.import_planet(planet_url)
+        planet_name, ins_planet = db1.import_planet(planet_url)
 
         if ins_planet == 1:
             planet_addel = "added"
         else:
             planet_addel = "updated"
 
-        all_planets, all_characters = db_sw.get_all_details_planet()
+        all_planets, all_characters = db1.get_all_details_planet()
         all_data, form_items_for_del = main_output(all_planets, all_characters)
 
         return render_template('index.html', var=all_data, addel_planet=planet_addel,
@@ -52,13 +57,13 @@ def insert():
 def delete():
     if request.method == 'POST':
         name_delete = request.form['name_delete']
-        name_del_planet, del_planet = db_sw.delete_planet(name_delete)
+        name_del_planet, del_planet = db1.delete_planet(name_delete)
         if del_planet == 1:
             planet_addel = "deleted"
         else:
             planet_addel = "NOT deleted"
 
-        all_planets, all_characters = db_sw.get_all_details_planet()
+        all_planets, all_characters = db1.get_all_details_planet()
         all_data, form_items_for_del = main_output(all_planets, all_characters)
 
         return render_template('index.html', var=all_data,  addel_planet=planet_addel,
@@ -105,5 +110,5 @@ def main_output(all_planets, all_characters):
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=8080, debug=True)
 
