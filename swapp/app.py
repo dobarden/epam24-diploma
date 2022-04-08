@@ -2,7 +2,7 @@
 @author: Denis Z
 2022
 """
-import flask
+import socket
 from flask import Flask, render_template, request
 from markupsafe import Markup
 import aws_mysql_db as db1
@@ -78,7 +78,7 @@ def delete():
 #Obtain the Server IP
 
 def server_ip():
-    ip_addr = request.host.split(':')[0]
+    ip_addr = socket.gethostbyname(socket.gethostname())
     return ip_addr
 
 
