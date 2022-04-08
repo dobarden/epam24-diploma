@@ -17,7 +17,7 @@ conn = pymysql.connect(
     password=variables.password,
     db=variables.database,
 )
-
+conn.autocommit(True)
 
 def import_planet(name):
     """
