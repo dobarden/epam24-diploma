@@ -2,7 +2,7 @@
 @author: Denis Z
 2022
 """
-
+import flask
 from flask import Flask, render_template, request
 from markupsafe import Markup
 import aws_mysql_db as db1
@@ -18,17 +18,20 @@ def before_first_request_func():
 #Homepage
 @app.route('/')
 def index():
+
     all_planets, all_characters = db1.get_all_details_planet()
     all_data, form_items_for_del = main_output(all_planets, all_characters)
     if not all_data:
         all_data = '<h2 style="color: red; text-align: center; padding-top: 30px;">No planets in the database!</h2>'
         all_data = Markup(all_data)
-    return render_template('index.html', var=all_data, form_items_for_del=form_items_for_del)
+    ip_addr = server_ip()
+    return render_template('index.html', var=all_data, form_items_for_del=form_items_for_del, ip_addr=ip_addr)
 
 
 #Adding data to the database
 @app.route('/insert', methods=['post'])
 def insert():
+
     if request.method == 'POST':
         form_input_select = request.form['form_select_planet']
         form_input_text = request.form['form_input_text']
@@ -47,14 +50,16 @@ def insert():
 
         all_planets, all_characters = db1.get_all_details_planet()
         all_data, form_items_for_del = main_output(all_planets, all_characters)
+        ip_addr = server_ip()
 
         return render_template('index.html', var=all_data, addel_planet=planet_addel,
-                               planet_name=planet_name, form_items_for_del=form_items_for_del)
+                               planet_name=planet_name, form_items_for_del=form_items_for_del, ip_addr=ip_addr)
 
 
 #Deleting planet from the database
 @app.route('/delete', methods=['post'])
 def delete():
+
     if request.method == 'POST':
         name_delete = request.form['name_delete']
         name_del_planet, del_planet = db1.delete_planet(name_delete)
@@ -65,9 +70,16 @@ def delete():
 
         all_planets, all_characters = db1.get_all_details_planet()
         all_data, form_items_for_del = main_output(all_planets, all_characters)
+        ip_addr = server_ip()
 
         return render_template('index.html', var=all_data,  addel_planet=planet_addel,
-                               planet_name=name_del_planet, form_items_for_del=form_items_for_del)
+                               planet_name=name_del_planet, form_items_for_del=form_items_for_del, ip_addr=ip_addr)
+
+#Obtain the Server IP
+
+def server_ip():
+    ip_addr = request.host.split(':')[0]
+    return ip_addr
 
 
 #Prepairing output for frontend
@@ -110,5 +122,5 @@ def main_output(all_planets, all_characters):
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=8080, debug=False)
+    app.run(host="0.0.0.0", port=8080, debug=True)
 

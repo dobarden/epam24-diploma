@@ -60,7 +60,7 @@ def delete_planet(name_delete):
     Delete planet and its residents from the database
     """
     cur = conn.cursor()
-    cur.execute(f"SELECT * FROM planets WHERE (url = '{name_delete}')")
+    cur.execute(f"SELECT SQL_NO_CACHE * FROM planets WHERE (url = '{name_delete}')")
     name_del_planet = cur.fetchall()[0][1]
 
     cur.execute(f"DELETE FROM planets WHERE (url = '{name_delete}')")
@@ -80,10 +80,10 @@ def get_all_details_planet():
     Getting data from the database
     """
     cur = conn.cursor()
-    cur.execute("SELECT * FROM planets")
+    cur.execute("SELECT SQL_NO_CACHE * FROM planets")
     details_planet = cur.fetchall()
 
-    cur.execute("SELECT * FROM characters")
+    cur.execute("SELECT SQL_NO_CACHE * FROM characters")
     details_character = cur.fetchall()
 
     return details_planet, details_character
