@@ -35,7 +35,7 @@ pipeline {
                 sh 'docker rmi dobarden/swapp-$ENV_BRNAME:0.$BUILD_NUMBER'
             }
         }		
-        stage('Add values') {
+        stage('Add credentials') {
             environment {
                 rds_db_host = credentials("rds_${ENV_BRNAME}_dbhost")
                 rds_dbname = credentials("rds_${ENV_BRNAME}_dbname")
