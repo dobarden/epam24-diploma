@@ -40,16 +40,16 @@ pipeline {
         }
         stage('Add values') {
             environment {
-                rds_$BRANCH_NAME_db_host = credentials('rds_$BRANCH_NAME_dbhost')
-                rds_$BRANCH_NAME_dbname = credentials('rds_$BRANCH_NAME_dbname')
-                rds_$BRANCH_NAME_user_pass = credentials('rds_$BRANCH_NAME_user_pass')
+                rds_db_host = credentials('rds_$BRANCH_NAME_dbhost')
+                rds_dbname = credentials('rds_$BRANCH_NAME_dbname')
+                rds_user_pass = credentials('rds_$BRANCH_NAME_user_pass')
 	        }
             steps {
                 dir('jenkins/deploy') {
                     sh '''
-                        sed "s/$BRANCH_NAME_latest_image/0.$BUILD_NUMBER/; s/$BRANCH_NAME_db_host/$rds_$BRANCH_NAME_db_host/; \
-                        s/$BRANCH_NAME_db_user/$rds_$BRANCH_NAME_user_pass_USR/; s/$BRANCH_NAME_db_pass/$rds_$BRANCH_NAME_user_pass_PSW/; \
-                        s/$BRANCH_NAME_db_name/$rds_$BRANCH_NAME_dbname/" -i deploy-autoscale-$BRANCH_NAME.yaml
+                        sed "s/$BRANCH_NAME_latest_image/0.$BUILD_NUMBER/; s/$BRANCH_NAME_db_host/$rds_db_host/; \
+                        s/$BRANCH_NAME_db_user/$rds_user_pass_USR/; s/$BRANCH_NAME_db_pass/$rds_user_pass_PSW/; \
+                        s/$BRANCH_NAME_db_name/$rds_dbname/" -i deploy-autoscale-$BRANCH_NAME.yaml
                     '''
                 }
             }
