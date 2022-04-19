@@ -56,7 +56,7 @@ pipeline {
                         s/"${BRANCH_NAME}_db_user"/$rds_user_pass_USR/; s/"${BRANCH_NAME}_db_pass"/$rds_user_pass_PSW/; \
                         s/"${BRANCH_NAME}_db_name"/$rds_dbname/" -i deploy-autoscale-$BRANCH_NAME.yaml
                     '''
-					sh "cat deploy-autoscale-$BRANCH_NAME.yaml"
+					sh "cat deploy-autoscale-${env.BRANCH_NAME}.yaml"
                 }
             }
         }
