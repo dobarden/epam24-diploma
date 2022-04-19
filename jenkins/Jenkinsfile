@@ -66,9 +66,10 @@ pipeline {
                 }
             }
         }	
-        stage('HTTP request') {
+        stage('Website availability test') {
             steps {
-                httpRequest "${ENV_URL}"
+				sh 'sleep 30'
+			    httpRequest "${ENV_URL}"
            }
         }		
         stage('Delete workspace after build') {
