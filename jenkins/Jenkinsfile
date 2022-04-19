@@ -1,10 +1,14 @@
 pipeline {
     agent any
-
+	
+	environment {
+        ENV_BRNAME = "${env.BRANCH_NAME == "main" ? "prod" : "dev"}"
+    }
+	
     stages {
 		stage('Clone repository') {
             steps{
-                git branch: '$BRANCH_NAME',
+                git branch: '$ENV_BRNAME',
                     url: 'https://github.com/dobarden/epam24-diploma.git'
                 }
         }
@@ -12,7 +16,7 @@ pipeline {
         stage('Build docker image') {
             steps{
                 dir('swapp') {
-                    sh 'docker build -t dobarden/swapp-$BRANCH_NAME:0.$BUILD_NUMBER .'
+                    sh 'docker build -t dobarden/swapp-$ENV_BRNAME:0.$BUILD_NUMBER .'
                 }
             }
         }
@@ -20,30 +24,30 @@ pipeline {
             steps{
                 withDockerRegistry(credentialsId: 'cred-docker-hub', url: 'https://index.docker.io/v1/') {
                     sh '''
-                        docker push dobarden/swapp-$BRANCH_NAME:0.$BUILD_NUMBER
+                        docker push dobarden/swapp-$ENV_BRNAME:0.$BUILD_NUMBER
                     '''
                 }
             }
         }
         stage('Delete docker image locally') {
             steps{
-                sh 'docker rmi dobarden/swapp-$BRANCH_NAME:0.$BUILD_NUMBER'
+                sh 'docker rmi dobarden/swapp-$ENV_BRNAME:0.$BUILD_NUMBER'
             }
         }
         stage('Add values') {
             environment {
-                rds_db_host = credentials("rds_${env.BRANCH_NAME}_dbhost")
-                rds_dbname = credentials("rds_${env.BRANCH_NAME}_dbname")
-                rds_user_pass = credentials("rds_${env.BRANCH_NAME}_user_pass")
+                rds_db_host = credentials("rds_$ENV_BRNAME_dbhost")
+                rds_dbname = credentials("rds_$ENV_BRNAME_dbname")
+                rds_user_pass = credentials("rds_$ENV_BRNAME_user_pass")
 	        }
             steps {
                 dir('jenkins/deploy') {
                     sh '''
-                        sed "s/"${BRANCH_NAME}_latest_image"/0.$BUILD_NUMBER/; s/"${BRANCH_NAME}_db_host"/$rds_db_host/; \
-                        s/"${BRANCH_NAME}_db_user"/$rds_user_pass_USR/; s/"${BRANCH_NAME}_db_pass"/$rds_user_pass_PSW/; \
-                        s/"${BRANCH_NAME}_db_name"/$rds_dbname/" -i deploy-autoscale-$BRANCH_NAME.yaml
+                        sed "s/"$ENV_BRNAME_latest_image"/0.$BUILD_NUMBER/; s/"$ENV_BRNAME_db_host"/$rds_db_host/; \
+                        s/"$ENV_BRNAME_db_user"/$rds_user_pass_USR/; s/"$ENV_BRNAME_db_pass"/$rds_user_pass_PSW/; \
+                        s/"$ENV_BRNAME_db_name"/$rds_dbname/" -i deploy-autoscale-$ENV_BRNAME.yaml
                     '''
-					sh "cat deploy-autoscale-${env.BRANCH_NAME}.yaml"
+					sh "cat deploy-autoscale-$ENV_BRNAME.yaml"
                 }
             }
         }
@@ -51,8 +55,8 @@ pipeline {
         stage('Deploy swapp') {
             steps {
                 dir('jenkins/deploy') {
-                    sh "kubectl apply -f deploy-autoscale-${env.BRANCH_NAME}.yaml --namespace=${env.BRANCH_NAME}"
-                    sh "kubectl get svc --namespace=${env.BRANCH_NAME}"
+                    sh "kubectl apply -f deploy-autoscale-$ENV_BRNAME.yaml --namespace=$ENV_BRNAME"
+                    sh "kubectl get svc --namespace=$ENV_BRNAME"
                 }
             }
         }
