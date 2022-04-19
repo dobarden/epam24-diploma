@@ -2,13 +2,7 @@ pipeline {
     agent any
 
     stages {
-		stage('Delete workspace before build') {
-            steps {
-                echo 'Deleting workspace'
-                deleteDir()
-            }
-        }
-        stage('Clone repository') {
+		stage('Clone repository') {
             steps{
                 git branch: '$BRANCH_NAME',
                     url: 'https://github.com/dobarden/epam24-diploma.git'
@@ -64,18 +58,18 @@ pipeline {
         stage('Deploy swapp') {
             steps {
                 dir('jenkins/deploy') {
-                    sh "kubectl apply -f deploy-autoscale-$BRANCH_NAME.yaml --namespace=$BRANCH_NAME"
-                    sh "kubectl get svc --namespace=$BRANCH_NAME"
+                    sh "kubectl apply -f deploy-autoscale-${env.BRANCH_NAME}.yaml --namespace=${env.BRANCH_NAME}"
+                    sh "kubectl get svc --namespace=${env.BRANCH_NAME}"
                 }
             }
         }
-        stage('Create $BRANCH_NAME ingress') {
+/*        stage('Create ingress') {
             steps {
                 catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-                    sh "kubectl create namespace $BRANCH_NAME"
+                    sh ""
                 }
             }
-        }
+        }*/
         stage('Delete workspace after build') {
             steps {
                 echo 'Deleting workspace'
