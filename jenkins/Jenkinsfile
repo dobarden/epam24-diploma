@@ -43,9 +43,9 @@ pipeline {
             steps {
                 dir('jenkins/deploy') {
                     sh '''
-                        sed "s/"$ENV_BRNAME_latest_image"/0.$BUILD_NUMBER/; s/"$ENV_BRNAME_db_host"/$rds_db_host/; \
-                        s/"$ENV_BRNAME_db_user"/$rds_user_pass_USR/; s/"$ENV_BRNAME_db_pass"/$rds_user_pass_PSW/; \
-                        s/"$ENV_BRNAME_db_name"/$rds_dbname/" -i deploy-autoscale-$ENV_BRNAME.yaml
+                        sed "s/"${ENV_BRNAME}_latest_image"/0.$BUILD_NUMBER/; s/"${ENV_BRNAME}_db_host"/$rds_db_host/; \
+                        s/"${ENV_BRNAME}_db_user"/$rds_user_pass_USR/; s/"${ENV_BRNAME}_db_pass"/$rds_user_pass_PSW/; \
+                        s/"${ENV_BRNAME}_db_name"/$rds_dbname/" -i deploy-autoscale-${ENV_BRNAME}.yaml
                     '''
 					sh "cat deploy-autoscale-$ENV_BRNAME.yaml"
                 }
