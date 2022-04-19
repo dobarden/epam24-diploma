@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     stages {
-		stage('Delete workspace after build') {
+		stage('Delete workspace before build') {
             steps {
                 echo 'Deleting workspace'
                 deleteDir()
@@ -78,7 +78,7 @@ pipeline {
             }
         }
 
-      stage('Deploy swapp') {
+        stage('Deploy swapp') {
             steps {
                 dir('jenkins/deploy') {
                     sh "kubectl apply -f deploy-autoscale-$BRANCH_NAME.yaml --namespace=$BRANCH_NAME"
@@ -100,4 +100,5 @@ pipeline {
             }
         }
     }
+
 }
