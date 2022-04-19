@@ -1,0 +1,13 @@
+pipeline {
+    agent any
+    stages {
+        stage('Main Branch Deploy Code') {
+            steps {
+                sh """
+                echo "Branch name: $BRANCH_NAME"
+                """
+                sh 'echo "Deploying Code from $BRANCH_NAME branch"'
+           }
+        }
+    }
+}
