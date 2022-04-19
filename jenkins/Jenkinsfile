@@ -50,7 +50,6 @@ pipeline {
                 rds_user_pass = credentials("rds_$BRANCH_NAME_user_pass")
 	        }
 			steps {
-			    sh 
 				sh 'echo "$rds_db_host"'
 				sh "echo '$rds_dbname'"
 				sh 'echo "Latest image: $BRANCH_NAME_latest_image"'
