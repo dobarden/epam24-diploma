@@ -33,7 +33,7 @@ pipeline {
             steps{
                 sh 'docker rmi dobarden/swapp-$ENV_BRNAME:0.$BUILD_NUMBER'
             }
-        }
+        }		
         stage('Add values') {
             environment {
                 rds_db_host = credentials("rds_${ENV_BRNAME}_dbhost")
@@ -50,7 +50,6 @@ pipeline {
                 }
             }
         }
-
         stage('Deploy swapp') {
             steps {
                 dir('jenkins/deploy') {
@@ -58,7 +57,14 @@ pipeline {
                     sh 'kubectl get svc --namespace=$ENV_BRNAME'
                 }
             }
-        }
+        }		
+		stage('Apply ingress') {
+            steps {
+                dir('ingress') {
+                    sh 'kubectl apply -f swapp-$ENV_BRNAME-ingress.yaml'
+                }
+            }
+        }		
         stage('Delete workspace after build') {
             steps {
                 echo 'Deleting workspace'
