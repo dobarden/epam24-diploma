@@ -36,9 +36,9 @@ pipeline {
         }
         stage('Add values') {
             environment {
-                rds_db_host = credentials("rds_$ENV_BRNAME_dbhost")
-                rds_dbname = credentials("rds_$ENV_BRNAME_dbname")
-                rds_user_pass = credentials("rds_$ENV_BRNAME_user_pass")
+                rds_db_host = credentials("rds_${ENV_BRNAME}_dbhost")
+                rds_dbname = credentials("rds_${ENV_BRNAME}_dbname")
+                rds_user_pass = credentials("rds_${ENV_BRNAME}_user_pass")
 	        }
             steps {
                 dir('jenkins/deploy') {
