@@ -30,13 +30,6 @@ pipeline {
                 sh 'docker rmi dobarden/swapp-$BRANCH_NAME:0.$BUILD_NUMBER'
             }
         }
- /*       stage('Create namespace') {
-            steps {
-                catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-                    sh "kubectl create namespace $BRANCH_NAME"
-                }
-            }
-        }*/
         stage('Add values') {
             environment {
                 rds_db_host = credentials("rds_${env.BRANCH_NAME}_dbhost")
@@ -63,13 +56,6 @@ pipeline {
                 }
             }
         }
-/*        stage('Create ingress') {
-            steps {
-                catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-                    sh ""
-                }
-            }
-        }*/
         stage('Delete workspace after build') {
             steps {
                 echo 'Deleting workspace'
