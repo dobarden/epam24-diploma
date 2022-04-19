@@ -1,13 +1,80 @@
 pipeline {
     agent any
+
     stages {
-        stage('Main Branch Deploy Code') {
+
+        stage('Clone repository from $BRANCH_NAME branch') {
+            steps{
+                git branch: '$BRANCH_NAME',
+                    url: 'https://github.com/dobarden/epam24-diploma.git'
+                }
+        }
+
+        stage('Build docker image') {
+            steps{
+                dir('swapp') {
+                    sh 'docker build -t dobarden/swapp-$BRANCH_NAME:0.$BUILD_NUMBER .'
+                }
+            }
+        }
+        stage('Push docker image to DockerHub') {
+            steps{
+                withDockerRegistry(credentialsId: 'cred-docker-hub', url: 'https://index.docker.io/v1/') {
+                    sh '''
+                        docker push dobarden/swapp-$BRANCH_NAME:0.$BUILD_NUMBER
+                    '''
+                }
+            }
+        }
+        stage('Delete docker image locally') {
+            steps{
+                sh 'docker rmi dobarden/swapp-$BRANCH_NAME:0.$BUILD_NUMBER'
+            }
+        }
+        stage('Create $BRANCH_NAME namespace') {
             steps {
-                sh """
-                echo "Branch name: $BRANCH_NAME"
-                """
-                sh 'echo "Deploying Code from $BRANCH_NAME branch"'
-           }
+                catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+                    sh "kubectl create namespace $BRANCH_NAME"
+                }
+            }
+        }
+        stage('Add values') {
+            environment {
+                rds_$BRANCH_NAME_db_host = credentials('rds_$BRANCH_NAME_dbhost')
+                rds_$BRANCH_NAME_dbname = credentials('rds_$BRANCH_NAME_dbname')
+                rds_$BRANCH_NAME_user_pass = credentials('rds_$BRANCH_NAME_user_pass')
+	        }
+            steps {
+                dir('jenkins/deploy') {
+                    sh '''
+                        sed "s/$BRANCH_NAME_latest_image/0.$BUILD_NUMBER/; s/$BRANCH_NAME_db_host/$rds_$BRANCH_NAME_db_host/; \
+                        s/$BRANCH_NAME_db_user/$rds_$BRANCH_NAME_user_pass_USR/; s/$BRANCH_NAME_db_pass/$rds_$BRANCH_NAME_user_pass_PSW/; \
+                        s/$BRANCH_NAME_db_name/$rds_$BRANCH_NAME_dbname/" -i deploy-autoscale-$BRANCH_NAME.yaml
+                    '''
+                }
+            }
+        }
+
+      stage('Deploy swapp') {
+            steps {
+                dir('jenkins/deploy') {
+                    sh "kubectl apply -f deploy-autoscale-$BRANCH_NAME.yaml --namespace=$BRANCH_NAME"
+                    sh "kubectl get svc --namespace=$BRANCH_NAME"
+                }
+            }
+        }
+        stage('Create $BRANCH_NAME ingress') {
+            steps {
+                catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+                    sh "kubectl create namespace $BRANCH_NAME"
+                }
+            }
+        }
+        stage('Delete workspace after build') {
+            steps {
+                echo 'Deleting workspace'
+                deleteDir()
+            }
         }
     }
 }
