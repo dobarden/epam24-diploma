@@ -3,7 +3,7 @@ pipeline {
 
     stages {
 
-        stage('Clone repository from $BRANCH_NAME branch') {
+        stage('Clone repository from ${BRANCH_NAME} branch') {
             steps{
                 git branch: '$BRANCH_NAME',
                     url: 'https://github.com/dobarden/epam24-diploma.git'
@@ -31,13 +31,13 @@ pipeline {
                 sh 'docker rmi dobarden/swapp-$BRANCH_NAME:0.$BUILD_NUMBER'
             }
         }
-        stage('Create $BRANCH_NAME namespace') {
+ /*       stage('Create ${BRANCH_NAME} namespace') {
             steps {
                 catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
                     sh "kubectl create namespace $BRANCH_NAME"
                 }
             }
-        }
+        }*/
         stage('Add values') {
             environment {
                 rds_db_host = credentials('rds_$BRANCH_NAME_dbhost')
