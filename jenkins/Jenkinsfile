@@ -8,7 +8,7 @@ pipeline {
     stages {
 		stage('Clone repository') {
             steps{
-                git branch: '$ENV_BRNAME',
+                git branch: "$ENV_BRNAME",
                     url: 'https://github.com/dobarden/epam24-diploma.git'
                 }
         }
