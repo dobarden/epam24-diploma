@@ -3,6 +3,7 @@ pipeline {
 	
 	environment {
         ENV_BRNAME = "${env.BRANCH_NAME == "main" ? "prod" : "dev"}"
+		ENV_URL = "${env.BRANCH_NAME == "main" ? "https://sw24.ru/" : "https://dev.sw24.ru/"}"
     }
 	
     stages {
@@ -64,6 +65,11 @@ pipeline {
                     sh 'kubectl apply -f swapp-$ENV_BRNAME-ingress.yaml'
                 }
             }
+        }	
+        stage('HTTP request') {
+            steps {
+                httpRequest "${ENV_URL}"
+           }
         }		
         stage('Delete workspace after build') {
             steps {
