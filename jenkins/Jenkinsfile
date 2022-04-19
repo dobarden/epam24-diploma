@@ -43,36 +43,41 @@ pipeline {
                 }
             }
         }*/
-        stage('Add values') {
+		stage('print variables') {
             environment {
-                rds_db_host = credentials('rds_$BRANCH_NAME_dbhost')
-                rds_dbname = credentials('rds_$BRANCH_NAME_dbname')
-                rds_user_pass = credentials('rds_$BRANCH_NAME_user_pass')
+                rds_db_host = credentials("rds_$BRANCH_NAME_dbhost")
+                rds_dbname = credentials("rds_$BRANCH_NAME_dbname")
+                rds_user_pass = credentials("rds_$BRANCH_NAME_user_pass")
 	        }
+			steps {
+			    sh 
+				sh 'echo "$rds_db_host"'
+				sh "echo '$rds_dbname'"
+				sh 'echo "Latest image: $BRANCH_NAME_latest_image"'
+				sh "echo 'Latest image2: $BRANCH_NAME_latest_image'"
+				sh "echo 'Build number: 0.$BUILD_NUMBER'"
+						
+				sh "echo '$BRANCH_NAME_db_host'"
+				sh "echo '$BRANCH_NAME_db_user'"
+				sh "echo '$rds_user_pass_USR'"
+				sh "echo '$BRANCH_NAME_db_pass'"
+				sh "echo '$rds_user_pass_PSW'"
+				sh "echo '$BRANCH_NAME_db_name'"
+                
+            }
+        }
+        stage('Add values') {
+            
             steps {
                 dir('jenkins/deploy') {
                     sh '''
-						echo '$rds_db_host'
-						echo '$rds_dbname'
-						echo '$BRANCH_NAME_latest_image'
-						echo '0.$BUILD_NUMBER'
-						
-						echo '$BRANCH_NAME_db_host'
-						echo '$BRANCH_NAME_db_user'
-						echo '$rds_user_pass_USR'
-						echo '$BRANCH_NAME_db_pass'
-						echo '$rds_user_pass_PSW'
-						echo '$BRANCH_NAME_db_name'
-						
-					
-                        sed 's/$BRANCH_NAME_latest_image/0.$BUILD_NUMBER/; s/$BRANCH_NAME_db_host/$rds_db_host/; \
+                        sed "s/$BRANCH_NAME_latest_image/0.$BUILD_NUMBER/; s/$BRANCH_NAME_db_host/$rds_db_host/; \
                         s/$BRANCH_NAME_db_user/$rds_user_pass_USR/; s/$BRANCH_NAME_db_pass/$rds_user_pass_PSW/; \
-                        s/$BRANCH_NAME_db_name/$rds_dbname/' -i deploy-autoscale-${BRANCH_NAME}.yaml
+                        s/$BRANCH_NAME_db_name/$rds_dbname/" -i deploy-autoscale-dev.yaml
 						
 						cat 'deploy-autoscale-$BRANCH_NAME.yaml'
 						cat "deploy-autoscale-$BRANCH_NAME.yaml"
 						cat deploy-autoscale-${BRANCH_NAME}.yaml
-						
                     '''
                 }
             }
