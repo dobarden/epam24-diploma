@@ -32,8 +32,8 @@ spec:
             value: "dev_db_name"
           resources:
             requests:
-              memory: 1000Mi
-              cpu: 200m
+              memory: 192Mi
+              cpu: 250m
 
 ---
 apiVersion: autoscaling/v2beta1
