@@ -33,7 +33,7 @@ spec:
           resources:
             requests:
               memory: 192Mi
-              cpu: 250m
+              cpu: 500m
 
 ---
 apiVersion: autoscaling/v2beta1
@@ -68,7 +68,7 @@ metadata:
 spec:
   type: ClusterIP
   selector:
-    project: swapp-dev    
+    project: swapp-dev
   ports:
     - name      : app-listener
       protocol  : TCP
