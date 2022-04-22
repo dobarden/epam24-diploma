@@ -32,8 +32,8 @@ spec:
             value: "prod_db_name"
           resources:
             requests:
-              memory: 512Mi
-              cpu: 100m
+              memory: 192Mi
+              cpu: 250m
 
 ---
 apiVersion: autoscaling/v2beta1
@@ -51,7 +51,7 @@ spec:
   - type: Resource
     resource:
       name: cpu
-      targetAverageUtilization: 50
+      targetAverageUtilization: 70
   - type: Resource
     resource:
       name: memory
