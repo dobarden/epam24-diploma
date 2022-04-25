@@ -1,0 +1,4 @@
+.idea/
+__pycache__/
+variables_temp.py
+init_db_temp.py
