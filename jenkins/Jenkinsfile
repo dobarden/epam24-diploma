@@ -14,6 +14,28 @@ pipeline {
                 }
         }
 
+        stage('SonarQube scan') {
+			when {
+                branch 'dev'
+            }
+            steps{
+                withSonarQubeEnv('SonarQube1') { 
+                            sh "${tool("SonarQubeScanner")}/bin/sonar-scanner  -Dsonar.projectKey=Diploma-swapp -Dsonar.sources=./swapp"
+                    }
+            }
+        }
+        
+        stage("Quality Gate") {
+			when {
+                branch 'dev'
+            }
+            steps {
+                timeout(time: 5, unit: 'MINUTES') {
+                    waitForQualityGate abortPipeline: true
+                }
+            }
+        }  		
+
         stage('Build docker image') {
             steps{
                 dir('swapp') {
