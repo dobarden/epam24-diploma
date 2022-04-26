@@ -7,13 +7,6 @@ pipeline {
     }
 	
     stages {
-//		stage('Clone repository') {
-//            steps{
-//                git branch: "${env.BRANCH_NAME}",
-//                    url: 'https://github.com/dobarden/epam24-diploma.git'
-//                }
-//        }
-
         stage('SonarQube scan') {
 			when {
                 branch 'dev'
