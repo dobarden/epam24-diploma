@@ -165,6 +165,7 @@ resource "aws_instance" "jenkins_server" {
               systemctl enable docker
               usermod -a -G docker jenkins
               systemctl restart jenkins
+              docker run -d --name sonarqube --restart unless-stopped -p 9000:9000 sonarqube
               yum install git -y
               curl -LO "https://storage.googleapis.com/kubernetes-release/release/$(curl \
               -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl"

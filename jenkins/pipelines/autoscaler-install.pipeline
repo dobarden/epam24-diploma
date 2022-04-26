@@ -1,0 +1,26 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Delete workspace before build starts') {
+            steps {
+                echo 'Deleting workspace'
+                deleteDir()
+            }
+        }
+        stage('Clone repository') {
+            steps{
+                git branch: 'dev',
+                    url: 'https://github.com/dobarden/epam24-diploma.git'
+                }
+        }
+        stage('Deploy autoscaler') {
+            steps {
+                dir('jenkins/deploy') {
+			        sh "kubectl apply -f cluster-autoscaler-autodiscover.yaml"
+                }
+            }
+        }
+
+    }
+}

@@ -1,0 +1,53 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Delete workspace before build starts') {
+            steps {
+                echo 'Deleting workspace'
+                deleteDir()
+            }
+        }
+        stage('Clone repository') {
+            steps{
+                git branch: 'dev',
+                    url: 'https://github.com/dobarden/epam24-diploma.git'
+                }
+        }
+        stage('Add repo and install ElasticSearch') {
+            steps {
+                dir('jenkins/deploy/elk') {
+			        sh "helm repo add elastic https://helm.elastic.co"
+                    sh "helm repo update"
+                    sh "kubectl create namespace elk"
+                    sh "helm install elasticsearch elastic/elasticsearch \
+                    --version 7.17.1 -f values-es.yaml \
+                    --namespace=elk"
+                }
+            }
+        }
+        stage('Install Kibana') {
+            steps {
+                dir('jenkins/deploy/elk') {
+			        sh "helm install kibana elastic/kibana --version 7.17.1 \
+                    -f values-kibana.yaml --namespace=elk"
+                }
+            }
+        }
+        stage('Install Filebeat') {
+            steps {
+                dir('jenkins/deploy/elk') {
+			        sh "helm install filebeat elastic/filebeat --version 7.17.1 \
+                    -f values-filebeat.yaml --namespace=elk"
+                }
+            }
+        }
+        stage('Apply ingress') {
+            steps {
+                dir('jenkins/deploy/ingress') {
+                    sh 'kubectl apply -f logs-ingress.yaml'
+                }
+            }
+        }
+    }
+}

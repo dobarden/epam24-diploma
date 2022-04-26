@@ -1,0 +1,42 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Delete workspace before build starts') {
+            steps {
+                echo 'Deleting workspace'
+                deleteDir()
+            }
+        }
+        stage('Metrics Server install') {
+            steps {
+			    sh "kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml"
+            }
+        }
+        stage('Add repo for Prometheus') {
+            steps {
+			    sh "helm repo add prometheus-community https://prometheus-community.github.io/helm-charts"
+			    sh "helm repo update"
+            }
+        }
+        stage('Prometheus & Grafana install') {
+            steps {
+			    sh "kubectl create namespace prometheus"
+			    sh "helm install prometheus prometheus-community/kube-prometheus-stack --namespace=prometheus --version 33.0.0"
+            }
+        }
+        stage('Clone repository for ingress') {
+            steps{
+                git branch: 'dev',
+                    url: 'https://github.com/dobarden/epam24-diploma.git'
+                }
+        }
+        stage('Apply ingress') {
+            steps {
+                dir('jenkins/deploy/ingress') {
+                    sh 'kubectl apply -f metrics-ingress.yaml'
+                }
+            }
+        }	
+    }
+}
