@@ -83,7 +83,7 @@ pipeline {
         }	
         stage('Website availability test') {
             steps {
-				sh 'sleep 30'
+				sh 'sleep 60'
 			    httpRequest "${ENV_URL}"
            }
         }		
