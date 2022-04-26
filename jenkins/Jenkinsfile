@@ -7,12 +7,12 @@ pipeline {
     }
 	
     stages {
-		stage('Clone repository') {
-            steps{
-                git branch: "${env.BRANCH_NAME}",
-                    url: 'https://github.com/dobarden/epam24-diploma.git'
-                }
-        }
+//		stage('Clone repository') {
+//            steps{
+//                git branch: "${env.BRANCH_NAME}",
+//                    url: 'https://github.com/dobarden/epam24-diploma.git'
+//                }
+//        }
 
         stage('SonarQube scan') {
 			when {
@@ -83,7 +83,7 @@ pipeline {
         }		
 		stage('Apply ingress') {
             steps {
-                dir('ingress') {
+                dir('jenkins/deploy/ingress') {
                     sh 'kubectl apply -f swapp-$ENV_BRNAME-ingress.yaml'
                 }
             }
