@@ -14,7 +14,7 @@ app = Flask(__name__)
 SECRET_KEY = os.urandom(32)
 app.config['SECRET_KEY'] = SECRET_KEY
 csrf = CSRFProtect(app)
-SESSION_COOKIE_DOMAIN = False
+app.config['WTF_CSRF_CHECK_DEFAULT'] = False
 
 #Initially adding planet and its residents to the database
 @app.before_first_request
