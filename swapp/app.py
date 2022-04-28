@@ -2,13 +2,19 @@
 @author: Denis Z
 2022
 """
-import socket
+import socket, os
 from flask import Flask, render_template, request
 from markupsafe import Markup
 import aws_mysql_db as db1
+from flask_wtf.csrf import CSRFProtect
+
 
 
 app = Flask(__name__)
+
+SECRET_KEY = os.urandom(32)
+app.config['SECRET_KEY'] = SECRET_KEY
+csrf = CSRFProtect(app)
 
 #Initially adding planet and its residents to the database
 @app.before_first_request
@@ -122,5 +128,5 @@ def main_output(all_planets, all_characters):
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=8080, debug=True)
+    app.run(host="0.0.0.0", port=8080, debug=False)
 

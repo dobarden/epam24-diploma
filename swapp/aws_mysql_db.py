@@ -79,6 +79,7 @@ def get_all_details_planet():
     """
     Getting data from the database
     """
+    conn.cursor()  # reconnecting mysql
     cur = conn.cursor()
     cur.execute("SELECT SQL_NO_CACHE * FROM planets")
     details_planet = cur.fetchall()

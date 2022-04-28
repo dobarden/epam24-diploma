@@ -3,3 +3,4 @@ markupsafe==2.0.1
 requests==2.27.1
 pymysql==1.0.2
 datetime==4.4
+flask-wtf==1.0.1
