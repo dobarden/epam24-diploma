@@ -9,12 +9,12 @@ import aws_mysql_db as db1
 from flask_wtf.csrf import CSRFProtect
 
 
-
 app = Flask(__name__)
 
 SECRET_KEY = os.urandom(32)
 app.config['SECRET_KEY'] = SECRET_KEY
 csrf = CSRFProtect(app)
+SESSION_COOKIE_DOMAIN = False
 
 #Initially adding planet and its residents to the database
 @app.before_first_request
