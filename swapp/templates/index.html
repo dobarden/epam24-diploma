@@ -30,7 +30,7 @@
             <aside class="sidebar sidebar1">
 				<p style="text-align: center;">
                 <p><strong>Server IP: {{ ip_addr }}</strong></p>
-                    <form action="/insert" method="POST" enctype="multipart/form-data">
+                    <form action="/insert" method="POST">
 
 						<p><strong>Add/Update planet:</strong></p>
 						<p><select name="form_select_planet" class="form_sidebar">
@@ -48,17 +48,15 @@
 						</select></p>
                         <p><input name="form_input_text" class="form_sidebar" placeholder="Input URL"></p>
 						<p><input type="submit" class="button_sidebar" value="Add/Update"></p>
-                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
 					</form>
 
-					<form action="/delete" method="POST" enctype="multipart/form-data">
+					<form action="/delete" method="POST">
 
 						<p><strong>Delete planet:</strong></p>
 						<p><select name="name_delete" class="form_sidebar">
 							{{ form_items_for_del }}
 						</select></p>
 						<p><input type="submit" class="button_sidebar" value="Delete"></p>
-                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
 					</form>
                 <p style="text-align: left; font-size: 13px; padding: 10px;">* There are 10 planets in the drop-down list for adding. You can upload additional planets by entering the URL of the planet in the "Input URL" field. For example: https://swapi.dev/api/planets/n/ where "n" is the planet number from 1 to 60.</p>
                 <img class="img_sidebar" src="{{ url_for('static', filename='c-3po.png') }}">
