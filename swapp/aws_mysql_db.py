@@ -129,4 +129,3 @@ def init_import_planet():
                     f"'{resident_data['height']}','{resident_data['mass']}','{formatted_date}')")
         conn.commit()
     print("----------------")
-
