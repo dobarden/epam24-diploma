@@ -34,17 +34,7 @@
 
 						<p><strong>Add/Update planet:</strong></p>
 						<p><select name="form_select_planet" class="form_sidebar">
-                            <option value="https://swapi.dev/api/planets/1/">Tatooine</option>
-							<option value="https://swapi.dev/api/planets/2/">Alderaan</option>
-                            <option value="https://swapi.dev/api/planets/3/">AYavin IV</option>
-							<option value="https://swapi.dev/api/planets/8/">Naboo</option>
-							<option value="https://swapi.dev/api/planets/9/">Coruscant</option>
-							<option value="https://swapi.dev/api/planets/10/">Kamino</option>
-                            <option value="https://swapi.dev/api/planets/14/">Kashyyyk</option>
-							<option value="https://swapi.dev/api/planets/22/">Corellia</option>
-							<option value="https://swapi.dev/api/planets/37/">Ryloth</option>
-                            <option value="https://swapi.dev/api/planets/51/">Mirial</option>
-
+                            {{ form_planets_urls }}
 						</select></p>
                         <p><input name="form_input_text" class="form_sidebar" placeholder="Input URL"></p>
 						<p><input type="submit" class="button_sidebar" value="Add/Update"></p>
@@ -58,7 +48,7 @@
 						</select></p>
 						<p><input type="submit" class="button_sidebar" value="Delete"></p>
 					</form>
-                <p style="text-align: left; font-size: 13px; padding: 10px;">* There are 10 planets in the drop-down list for adding. You can upload additional planets by entering the URL of the planet in the "Input URL" field. For example: https://swapi.dev/api/planets/n/ where "n" is the planet number from 1 to 60.</p>
+                <p style="text-align: left; font-size: 13px; padding: 10px;">* There are 60 planets totally in the drop-down list for adding. Also, you can upload planets by entering the URL of the planet in the "Input URL" field. For example: https://swapi.dev/api/planets/n/ where "n" is the planet's number from 1 to 60.</p>
                 <img class="img_sidebar" src="{{ url_for('static', filename='c-3po.png') }}">
             </aside>
         </div>

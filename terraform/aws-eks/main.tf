@@ -327,9 +327,6 @@ resource "aws_eks_node_group" "diploma-eks-node-group" {
     role = "general"
   }
 
-  tags = {
-    Name = "Diploma-EKS-grp-node"
-  }
 
   depends_on = [
     aws_iam_role_policy_attachment.nodes-AmazonEKSWorkerNodePolicy,
