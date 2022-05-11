@@ -10,9 +10,9 @@ import aws_mysql_db as db1
 app = Flask(__name__)
 
 #Initially adding planets with URLs and tables to the database
-@app.before_first_request
-def before_first_request_func():
-    db1.init_import_planetsurls()
+#@app.before_first_request
+#def before_first_request_func():
+#    db1.init_import_planetsurls()
 
 #Homepage
 @app.route('/')
