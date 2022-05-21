@@ -8,9 +8,9 @@ pipeline {
 	
     stages {
         stage('SonarQube scan') {
-			when {
-                branch 'dev'
-            }
+			//when {
+            //    branch 'dev'
+            //}
             steps{
                 withSonarQubeEnv('SonarQube1') { 
                             sh "${tool("SonarQubeScanner")}/bin/sonar-scanner  -Dsonar.projectKey=Diploma-swapp -Dsonar.sources=./swapp"
