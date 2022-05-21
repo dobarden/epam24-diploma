@@ -19,9 +19,9 @@ pipeline {
         }
         
         stage("Quality Gate") {
-			when {
-                branch 'dev'
-            }
+			//when {
+            //    branch 'dev'
+            //}
             steps {
                 timeout(time: 5, unit: 'MINUTES') {
                     waitForQualityGate abortPipeline: true
@@ -83,7 +83,7 @@ pipeline {
         }	
         stage('Website availability test') {
             steps {
-				sh 'sleep 90'
+				sh 'sleep 60'
 			    httpRequest "${ENV_URL}"
            }
         }		
