@@ -89,7 +89,6 @@ def get_all_details_planet():
     return details_planet, details_character
 
 
-
 def init_import_planet():
     """
     Initially adding planet and its residents to the database
@@ -130,41 +129,3 @@ def init_import_planet():
                     f"'{resident_data['height']}','{resident_data['mass']}','{formatted_date}')")
         conn.commit()
     print("----------------")
-
-
-def init_import_planetsurls():
-    """
-    Initially adding planet and its residents to the database
-    """
-    # Creating tables
-    cursor = conn.cursor()
-    cursor.execute("CREATE TABLE IF NOT EXISTS planetsurls (id INT AUTO_INCREMENT PRIMARY KEY,"
-                   "name VARCHAR(200) UNIQUE, url VARCHAR(200))")
-    cursor.execute("CREATE TABLE IF NOT EXISTS planets (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(200) UNIQUE,"
-                   "gravity VARCHAR(200), climate VARCHAR(200), terrain VARCHAR(200),population BIGINT,url VARCHAR(200),"
-                   "date VARCHAR(40))")
-    cursor.execute("CREATE TABLE IF NOT EXISTS characters (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(200) UNIQUE,"
-                   "gender VARCHAR(20),homeworld VARCHAR(200),height SMALLINT,mass VARCHAR(20),date VARCHAR(40))")
-
-
-    for itemplanet in range(1, 61):
-        url = f"https://swapi.dev/api/planets/{itemplanet}/"
-        print(url)
-
-        response = requests.get(url, headers={'Accept': 'application/json'}, params={format: json})
-        data = response.json()
-
-        cur = conn.cursor()
-        cur.execute(f"REPLACE INTO planetsurls (name,url) VALUES ('{data['name']}','{url}')")
-    # Saving transaction
-    conn.commit()
-
-
-def get_planets_urls():
-    """
-    Getting planets and urls from the database
-    """
-    cur = conn.cursor()
-    cur.execute("SELECT SQL_NO_CACHE * FROM planetsurls ORDER BY name")
-    planets_urls = cur.fetchall()
-    return planets_urls
